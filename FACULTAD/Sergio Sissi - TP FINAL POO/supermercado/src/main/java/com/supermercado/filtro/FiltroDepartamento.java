@@ -1,9 +1,6 @@
 package com.supermercado.filtro;
 
-import com.supermercado.producto.Producto;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.supermercado.productos.Producto;
 
 public class FiltroDepartamento implements Filtro {
     private String departamento;

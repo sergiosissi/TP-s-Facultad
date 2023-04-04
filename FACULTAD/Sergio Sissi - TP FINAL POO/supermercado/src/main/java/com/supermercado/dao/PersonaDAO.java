@@ -7,14 +7,33 @@ import java.util.List;
 
 import com.supermercado.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class PersonaDAO {
+
+    private Session session;
+    public PersonaDAO() {
+        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+    }
+
     public boolean obtenerClientePorDni(String dni) {
         return false;
     }
 
-    public void registrarCliente(Cliente nuevoCliente) {
+    public void registrarPersona(Persona nuevaPersona) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(nuevaPersona);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
     public Persona buscarPorDni(String dni) {

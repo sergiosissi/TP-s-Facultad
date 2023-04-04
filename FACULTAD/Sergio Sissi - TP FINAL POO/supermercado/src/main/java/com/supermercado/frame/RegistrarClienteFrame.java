@@ -5,7 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.supermercado.compra.Compra;
 import com.supermercado.dao.ClienteDAO;
 import com.supermercado.dao.PersonaDAO;
 import com.supermercado.persona.Cliente;
@@ -82,20 +84,23 @@ public class RegistrarClienteFrame extends JFrame {
             return;
         }
 
+        Persona nuevaPersona = new Persona();
+        nuevaPersona.setNombre(nombre);
+        nuevaPersona.setApellido(apellido);
+        nuevaPersona.setDni(dni);
 
+        // personaDAO.registrarPersona(nuevaPersona);
+
+        List<Compra> compras = new ArrayList<>();
         Cliente cliente = new Cliente();
         cliente.setNombre(nombre);
         cliente.setApellido(apellido);
         cliente.setDni(dni);
-        cliente.setTelefono(telefono);
-        cliente.setHistorialCompras(new ArrayList<>());
-
-        ClienteDAO clienteDao = new ClienteDAO();
-        clienteDao.guardar(cliente);
-
-        JOptionPane.showMessageDialog(this, "Cliente registrado con éxito", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-        this.dispose();
+        cliente.setHistorialCompras(compras);
+        clienteDAO.guardar(cliente);
     }
+
+
 }
 
 

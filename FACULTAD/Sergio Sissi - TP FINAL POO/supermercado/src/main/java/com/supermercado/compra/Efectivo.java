@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "efectivo")
+@PrimaryKeyJoinColumn(name = "id_pago", referencedColumnName = "id")
 public class Efectivo extends Pago {
     @Column(name = "descuento")
     private Double descuento;

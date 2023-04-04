@@ -1,6 +1,6 @@
 package com.supermercado.dao;
 
-import com.supermercado.producto.Producto;
+import com.supermercado.productos.Producto;
 import com.supermercado.util.HibernateUtil;
 import org.hibernate.Session;
 

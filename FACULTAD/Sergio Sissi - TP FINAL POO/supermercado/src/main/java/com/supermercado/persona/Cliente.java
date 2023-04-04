@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "cliente")
+@PrimaryKeyJoinColumn(name = "id_persona", referencedColumnName = "id")
 public class Cliente extends Persona {
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -15,13 +17,13 @@ public class Cliente extends Persona {
     public Cliente() {
     }
 
-    public Cliente(String nombre, String apellido, String dni, String telefono, List<Compra> historialCompras) {
-        super(nombre, apellido, dni, telefono);
+    public Cliente(String nombre, String apellido, String dni, List<Compra> historialCompras) {
+        super(nombre, apellido, dni);
         this.historialCompras = historialCompras;
     }
 
-    public Cliente(String nombre, String apellido, String dni, String telefono) {
-        super(nombre, apellido, dni, telefono);
+    public Cliente(String nombre, String apellido, String dni) {
+        super(nombre, apellido, dni);
     }
 
     public String getNombre() {
@@ -46,14 +48,6 @@ public class Cliente extends Persona {
 
     public void setDni(String dni) {
         super.setDni(dni);
-    }
-
-    public String getATelefono() {
-        return super.getTelefono();
-    }
-
-    public void setTelefono(String telefono) {
-        super.setTelefono(telefono);
     }
 
     public List<Compra> getHistorialCompras() {

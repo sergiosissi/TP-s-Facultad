@@ -19,7 +19,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.32.Final</version>
+            <version>5.4.30.Final</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -32,10 +32,11 @@
             <version>8.0.32</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.6.15.Final</version>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
         </dependency>
+
     </dependencies>
 
     <!-- Configuración de plugins -->
@@ -53,7 +54,15 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.tuempresa.supermercado.Main</mainClass>
+                    <mainClass>com.supermercado.Main</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,9 +1,9 @@
 package com.supermercado.frame;
 
-import com.supermercado.producto.Producto;
-import com.supermercado.producto.ProductoCompuesto;
-import com.supermercado.producto.ProductoPorPeso;
-import com.supermercado.producto.ProductoSimple;
+import com.supermercado.productos.Producto;
+import com.supermercado.productos.ProductoCompuesto;
+import com.supermercado.productos.ProductoPorPeso;
+import com.supermercado.productos.ProductoSimple;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

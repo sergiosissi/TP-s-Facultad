@@ -1,18 +1,15 @@
 package com.supermercado.frame;
 
-import com.supermercado.producto.Producto;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SupermercadoFrame extends JFrame {
 
     private JButton btnRegistrarCliente;
     private JButton btnRealizarCompra;
+    private JButton btnVerCombos;
     private JButton btnAgregarStock;
     private JButton btnSalir;
 
@@ -21,6 +18,7 @@ public class SupermercadoFrame extends JFrame {
         setLayout(new FlowLayout());
         add(btnRegistrarCliente);
         add(btnRealizarCompra);
+        add(btnVerCombos);
         add(btnAgregarStock);
         add(btnSalir);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,10 +42,30 @@ public class SupermercadoFrame extends JFrame {
         btnRealizarCompra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                RealizarCompraFrame realizarCompraFrame = new RealizarCompraFrame();
+                realizarCompraFrame.setVisible(true);
+            }
+        });
+
+        btnVerCombos = new JButton("Ver Combos");
+        btnVerCombos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VerCombosFrame verCombosFrame = new VerCombosFrame();
+                verCombosFrame.setVisible(true);
+            }
+        });
+
+
+        btnRealizarCompra = new JButton("Realizar Compra");
+        btnRealizarCompra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 RealizarCompraFrame realizarCompraFrameFrame = new RealizarCompraFrame();
                 realizarCompraFrameFrame.setVisible(true);
             }
         });
+
 
         btnAgregarStock = new JButton("Agregar Stock");
         btnAgregarStock.addActionListener(new ActionListener() {

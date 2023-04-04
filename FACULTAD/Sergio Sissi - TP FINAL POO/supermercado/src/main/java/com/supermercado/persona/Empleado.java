@@ -1,11 +1,13 @@
 package com.supermercado.persona;
 
-import com.supermercado.producto.Producto;
-import com.supermercado.producto.ProductoSimple;
+import com.supermercado.productos.Producto;
+import com.supermercado.productos.ProductoSimple;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "empleado")
+@PrimaryKeyJoinColumn(name = "id_persona", referencedColumnName = "id")
 public class Empleado extends Persona {
 
     @Column(name = "legajo")
@@ -13,8 +15,8 @@ public class Empleado extends Persona {
 
     public Empleado() {}
 
-    public Empleado(String nombre, String apellido, String dni, String telefono, String legajo) {
-        super(nombre, apellido, dni, telefono);
+    public Empleado(String nombre, String apellido, String dni, String legajo) {
+        super(nombre, apellido, dni);
         this.legajo = legajo;
     }
 

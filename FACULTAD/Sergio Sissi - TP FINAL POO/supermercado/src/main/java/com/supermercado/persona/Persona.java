@@ -3,10 +3,12 @@ package com.supermercado.persona;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "persona")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "nombre")
@@ -18,10 +20,8 @@ public class Persona {
     @Column(name = "dni")
     private String dni;
 
-    @Column(name = "telefono")
-    private String telefono;
 
-    public Persona(String nombre, String apellido, String dni, String telefono) {
+    public Persona(String nombre, String apellido, String dni) {
     }
 
     public Persona() {
@@ -61,13 +61,6 @@ public class Persona {
         this.dni = dni;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
 }
 
 

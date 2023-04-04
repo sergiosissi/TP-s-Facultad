@@ -1,7 +1,7 @@
 package com.supermercado.compra;
 
 import com.supermercado.persona.Cliente;
-import com.supermercado.producto.Producto;
+import com.supermercado.productos.Producto;
 
 import javax.persistence.*;
 import java.time.LocalDate;

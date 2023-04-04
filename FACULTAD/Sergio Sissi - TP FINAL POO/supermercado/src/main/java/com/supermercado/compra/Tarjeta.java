@@ -1,10 +1,14 @@
 package com.supermercado.compra;
 
+import com.google.protobuf.ExperimentalApi;
+
 import javax.persistence.*;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
+@Table(name = "tarjeta")
+@PrimaryKeyJoinColumn(name = "id_pago", referencedColumnName = "id")
 public class Tarjeta extends Pago {
     @Column(name = "cuotas")
     private Integer cuotas;

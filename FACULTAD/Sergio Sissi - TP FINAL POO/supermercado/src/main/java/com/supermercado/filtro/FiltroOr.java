@@ -1,8 +1,6 @@
 package com.supermercado.filtro;
 
-import com.supermercado.producto.Producto;
-
-import java.util.List;
+import com.supermercado.productos.Producto;
 
 public class FiltroOr implements Filtro {
     private Filtro filtro1;

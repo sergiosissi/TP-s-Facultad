@@ -1,6 +1,7 @@
 package com.supermercado.dao;
 
 import com.supermercado.persona.Cliente;
+import com.supermercado.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -8,7 +9,7 @@ public class ClienteDAO {
     private Session session;
 
     public ClienteDAO() {
-        this.session = session;
+        this.session =  HibernateUtil.getSessionFactory().openSession();
     }
 
     public void guardar(Cliente cliente) {

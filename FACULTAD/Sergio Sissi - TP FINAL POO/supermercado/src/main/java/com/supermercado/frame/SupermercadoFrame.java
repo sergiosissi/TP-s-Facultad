@@ -10,6 +10,8 @@ public class SupermercadoFrame extends JFrame {
     private JButton btnRegistrarCliente;
     private JButton btnRealizarCompra;
     private JButton btnVerCombos;
+    private JButton btnAgregarProducto;
+    private JButton btnAgregarCombo;
     private JButton btnAgregarStock;
     private JButton btnSalir;
 
@@ -19,6 +21,8 @@ public class SupermercadoFrame extends JFrame {
         add(btnRegistrarCliente);
         add(btnRealizarCompra);
         add(btnVerCombos);
+        add(btnAgregarProducto);
+        add(btnAgregarCombo);
         add(btnAgregarStock);
         add(btnSalir);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,6 +70,23 @@ public class SupermercadoFrame extends JFrame {
             }
         });
 
+        btnAgregarProducto = new JButton("Agregar Productos");
+        btnAgregarProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AgregarProductosFrame agregarProductosFrame = new AgregarProductosFrame();
+                agregarProductosFrame.setVisible(true);
+            }
+        });
+
+        btnAgregarCombo = new JButton("Agregar Combos");
+        btnAgregarCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AgregarCombosFrame agregarCombosFrame = new AgregarCombosFrame();
+                agregarCombosFrame.setVisible(true);
+            }
+        });
 
         btnAgregarStock = new JButton("Agregar Stock");
         btnAgregarStock.addActionListener(new ActionListener() {

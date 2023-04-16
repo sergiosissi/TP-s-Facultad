@@ -4,8 +4,8 @@ import com.supermercado.persona.Cliente;
 import com.supermercado.productos.Producto;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,7 +28,7 @@ public class Compra {
 
     private double total;
 
-    private LocalDate fechaCompra;
+    private Date fechaCompra;
 
     @ManyToOne
     @JoinColumn(name = "pago_id")
@@ -45,7 +45,7 @@ public class Compra {
     public Compra() {
     }
 
-    public Compra(Cliente cliente, List<Producto> productos, double total, LocalDate fechaCompra, Pago pago) {
+    public Compra(Cliente cliente, List<Producto> productos, double total, Date fechaCompra, Pago pago) {
         this.cliente = cliente;
         this.productos = productos;
         this.total = total;
@@ -93,12 +93,20 @@ public class Compra {
         this.total = total;
     }
 
-    public LocalDate getFechaCompra() {
+    public Date getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(LocalDate fechaCompra) {
+    public void setFechaCompra(Date fechaCompra) {
         this.fechaCompra = fechaCompra;
+    }
+
+    public static class CompraProducto {
+        public void setCompra(Compra compra) {
+        }
+
+        public void setProducto(Producto producto) {
+        }
     }
 }
 

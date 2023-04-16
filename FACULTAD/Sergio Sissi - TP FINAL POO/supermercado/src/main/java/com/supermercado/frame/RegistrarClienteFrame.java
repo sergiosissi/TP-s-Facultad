@@ -89,7 +89,6 @@ public class RegistrarClienteFrame extends JFrame {
         nuevaPersona.setApellido(apellido);
         nuevaPersona.setDni(dni);
 
-        // personaDAO.registrarPersona(nuevaPersona);
 
         List<Compra> compras = new ArrayList<>();
         Cliente cliente = new Cliente();

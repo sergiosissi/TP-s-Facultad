@@ -1,5 +1,8 @@
 package com.supermercado.frame;
 
+import com.supermercado.dao.ClienteDAO;
+import com.supermercado.dao.ProductoDAO;
+import com.supermercado.persona.Cliente;
 import com.supermercado.productos.Producto;
 import com.supermercado.productos.ProductoCompuesto;
 import com.supermercado.productos.ProductoPorPeso;
@@ -28,7 +31,7 @@ public class RealizarCompraFrame extends JFrame {
         setSize(600, 400);
 
         // Obtener datos de la base de datos
-        List<Producto> productos = obtenerProductosDeLaBaseDeDatos();
+        List<Producto> productos = getProductos();
 
         // Crear tabla de productos
         String[] columnasProductos = {"Nombre", "Departamento", "Precio"};
@@ -50,7 +53,20 @@ public class RealizarCompraFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Realizar la compra y cerrar la ventana
-                realizarCompra();
+               // realizarCompra();
+                String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
+
+                ClienteDAO clienteDAO = new ClienteDAO();
+
+                Cliente cliente = clienteDAO.getClienteByDNI(dni);
+
+                if(cliente != null){
+                    MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
+                    metodoPagoFrame.setVisible(true);
+                }
+                else{
+                    JOptionPane.showInputDialog("El cliente no existe. Por favor registrese para poder comprar");
+                }
                 dispose();
             }
         });
@@ -130,8 +146,8 @@ public class RealizarCompraFrame extends JFrame {
 
 
     private void realizarCompra() {
-        // Realizar la compra, por ejemplo, guardando los datos en la base de datos
-        // En este ejemplo, simplemente imprimimos los productos comprados y el total
+
+
         System.out.println("Productos comprados:");
         for (Producto producto : carrito) {
             System.out.println(producto.getNombre() + " - " + producto.getDepartamento() + " - $" + producto.getPrecio());
@@ -143,22 +159,10 @@ public class RealizarCompraFrame extends JFrame {
         lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
 
-    private List<Producto> obtenerProductosDeLaBaseDeDatos() {
-        // En este ejemplo, simulamos obtener los datos de la base de datos
-        List<Producto> productos = new ArrayList<>();
-        productos.add(new ProductoPorPeso("Manzanas", 2.50, 20, 1, "Frutas" ));
-        productos.add(new ProductoSimple("Leche", 100.00, 30, "Lácteos"));
-        productos.add(new ProductoSimple("Pan", 30.00, 20,  "Panadería"));
-        productos.add(new ProductoSimple("Queso",3.00, 34, "Lácteos" ));
-        productos.add(new ProductoSimple("Tomates", 10.50, 30, "Verduras"));
+    private List<Producto> getProductos() {
 
-        ProductoSimple lechuga = new ProductoSimple("Lechuga", 30, 30, "Verduras");
-        ProductoSimple rabanito = new ProductoSimple("Rabanito", 25, 30, "Verduras");
-        List<Producto> comboEnsalada = new ArrayList<>();
-        comboEnsalada.add(lechuga);
-        comboEnsalada.add(rabanito);
-        productos.add(new ProductoCompuesto("Combo Ensalada", 3, "Combos", comboEnsalada));
-        return productos;
+        ProductoDAO productoDAO = new ProductoDAO();
+        return productoDAO.getAll();
     }
 
 }

@@ -52,6 +52,21 @@ public class ProductoCompuesto extends Producto {
     }
 
 
+    @Override
+    public String toString() {
+        // Devuelve una cadena formateada con la información deseada
+        StringBuilder sb = new StringBuilder();
+        sb.append("Nombre: ").append(getNombre()).append(", Productos: ");
+        for (int i = 0; i < productos.size(); i++) {
+            Producto producto = productos.get(i);
+            sb.append(producto.getNombre());
+            if (i < productos.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(", Precio: ").append(getPrecio()).append(" $, Departamento: ").append(getDepartamento());
+        return sb.toString();
+    }
 
 
 

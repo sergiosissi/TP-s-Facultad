@@ -26,4 +26,10 @@ public class ProductoSimple extends Producto {
         this.precio = precio;
     }
 
+    @Override
+    public String toString() {
+        // Devuelve una cadena formateada con la información deseada
+        return "Nombre: " + getNombre() + ", Stock: " + getStock() + ", Departamento: " + getDepartamento();
+    }
+
 }

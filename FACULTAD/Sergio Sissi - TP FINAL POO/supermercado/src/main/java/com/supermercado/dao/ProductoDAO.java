@@ -1,8 +1,10 @@
 package com.supermercado.dao;
 
+import com.supermercado.persona.Cliente;
 import com.supermercado.productos.Producto;
 import com.supermercado.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 
 import java.util.ArrayList;
@@ -17,23 +19,46 @@ public class ProductoDAO {
     }
 
     public static List<Producto> getAll() {
-       // List<Producto> productos = session.createQuery("FROM Producto").list();
-        List<Producto> productos = null;
+        List<Producto> productos = session.createQuery("FROM Producto").list();
         if (productos == null) {
             productos = new ArrayList<>();
         }
         return productos;
 
     }
-
-    public static Producto getById(Long id) {
-        return session.get(Producto.class, id);
+    public static boolean existeProducto(String nombre) {
+        Transaction tx = null;
+        boolean existe = false;
+        try {
+            tx = session.beginTransaction();
+            // Utiliza una consulta de Hibernate para verificar si existe un producto con el nombre proporcionado
+            Producto producto = (Producto) session.createQuery("FROM Producto WHERE nombre = :nombre")
+                    .setParameter("nombre", nombre)
+                    .uniqueResult();
+            existe = producto != null; // Si el producto no es nulo, significa que existe en la base de datos
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        return existe;
     }
 
-    public void save(Producto producto) {
-        session.beginTransaction();
-        session.save(producto);
-        session.getTransaction().commit();
+
+    public static void guardar(Producto producto) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(producto);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
     public static void update(Producto producto) {

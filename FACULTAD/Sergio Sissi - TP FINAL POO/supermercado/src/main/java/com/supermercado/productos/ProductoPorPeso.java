@@ -32,6 +32,12 @@ public class ProductoPorPeso extends ProductoSimple {
         return super.getPrecio() * this.getPeso();
     }
 
+    @Override
+    public String toString() {
+        // Devuelve una cadena formateada con la información deseada
+        return "Nombre: " + getNombre() + ", Peso: " + getPeso() + " kg, Precio: " + getPrecio() + " $/kg, Departamento: " + getDepartamento();
+    }
+
 
 }
 

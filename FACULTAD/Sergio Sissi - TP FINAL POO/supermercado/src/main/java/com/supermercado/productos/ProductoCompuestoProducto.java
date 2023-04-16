@@ -27,5 +27,13 @@ public class ProductoCompuestoProducto {
         this.producto = producto;
     }
 
+    public void setProductoCompuesto(ProductoCompuesto productoCompuesto) {
+        this.productoCompuesto = productoCompuesto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
     // Getters y setters
 }

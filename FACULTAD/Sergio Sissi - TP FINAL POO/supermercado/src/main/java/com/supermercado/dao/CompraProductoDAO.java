@@ -1,6 +1,6 @@
 package com.supermercado.dao;
 
-import com.supermercado.compra.Compra;
+import com.supermercado.compra.CompraProducto;
 import com.supermercado.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,7 +14,7 @@ public class CompraProductoDAO {
         this.session =  HibernateUtil.getSessionFactory().openSession();
     }
 
-    public void guardar(Compra.CompraProducto compraProducto) {
+    public void guardar(CompraProducto compraProducto) {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

@@ -1,6 +1,6 @@
 package com.supermercado.frame;
 
-import com.supermercado.compra.Compra;
+import com.supermercado.compra.*;
 import com.supermercado.compra.Efectivo;
 import com.supermercado.compra.Tarjeta;
 import com.supermercado.dao.ClienteDAO;
@@ -8,7 +8,7 @@ import com.supermercado.dao.CompraDAO;
 import com.supermercado.dao.CompraProductoDAO;
 import com.supermercado.dao.PagoDAO;
 import com.supermercado.persona.Cliente;
-import com.supermercado.productos.Producto;
+import com.supermercado.productos.*;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
@@ -147,12 +147,14 @@ public class MetodoPagoFrame extends JFrame {
         Tarjeta pagoTarjeta = null;
 
         if(metodoPago.equals("Efectivo")){
+            pagoEfectivo = new Efectivo();
             pagoEfectivo.setFechaPago(fecha);
             pagoEfectivo.setDescuento(0.0);
             pagoEfectivo.setMontoPagado(montoTotal);
             PagoDAO.guardar(pagoEfectivo);
 
         }else{
+            pagoTarjeta = new Tarjeta();
             pagoTarjeta.setTipoTarjeta(tipoTarjeta);
             pagoTarjeta.setCuotas(numCuotas);
             pagoTarjeta.setRecargo(0.0);
@@ -180,7 +182,7 @@ public class MetodoPagoFrame extends JFrame {
 
 
         for (Producto producto : carrito) {
-            Compra.CompraProducto compraProducto = new Compra.CompraProducto();
+            CompraProducto compraProducto = new CompraProducto();
             compraProducto.setCompra(compra);
             compraProducto.setProducto(producto);
 

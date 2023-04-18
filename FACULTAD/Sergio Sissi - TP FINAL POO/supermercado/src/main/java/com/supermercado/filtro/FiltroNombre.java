@@ -12,7 +12,7 @@ public class FiltroNombre implements Filtro {
 
     @Override
     public boolean cumple(Producto producto) {
-        return (producto.getDepartamento().equals(this.nombre))?true:false;
+        return (producto.getNombre().equals(this.nombre))?true:false;
     }
 
 }

@@ -2,6 +2,7 @@ package com.supermercado.frame;
 
 import com.supermercado.dao.ClienteDAO;
 import com.supermercado.dao.ProductoDAO;
+import com.supermercado.filtro.*;
 import com.supermercado.persona.Cliente;
 import com.supermercado.productos.Producto;
 import com.supermercado.productos.ProductoCompuesto;
@@ -22,7 +23,10 @@ public class RealizarCompraFrame extends JFrame {
     private JTable tablaCarrito;
     private JButton btnConfirmarCompra;
     private JLabel lblTotal;
+    private JButton btnFiltrar;
     private List<Producto> carrito;
+    private List<Producto> productos;
+    private String filtroDepartamento;
     private double total;
 
     public RealizarCompraFrame() {
@@ -31,7 +35,7 @@ public class RealizarCompraFrame extends JFrame {
         setSize(600, 400);
 
         // Obtener datos de la base de datos
-        List<Producto> productos = getProductos();
+        productos = getProductos();
 
         // Crear tabla de productos
         String[] columnasProductos = {"Nombre", "Departamento", "Precio"};
@@ -47,26 +51,42 @@ public class RealizarCompraFrame extends JFrame {
         DefaultTableModel modeloCarrito = new DefaultTableModel(columnasCarrito, 0);
         tablaCarrito = new JTable(modeloCarrito);
 
+
+        //Crear botón para filtrar los productos
+
+        JButton btnFiltrar = new JButton("Filtrar");
+        btnFiltrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Crear y mostrar la ventana de FiltrosFrame
+                FiltrosFrame filtrosFrame = new FiltrosFrame(RealizarCompraFrame.this);
+            }
+        });
+
         // Crear botón de confirmar compra
         btnConfirmarCompra = new JButton("Confirmar Compra");
         btnConfirmarCompra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Realizar la compra y cerrar la ventana
-               // realizarCompra();
-                String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
+                // Realizar la compra
+                if(carrito != null && !carrito.isEmpty()){
+                    String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
 
-                ClienteDAO clienteDAO = new ClienteDAO();
+                    ClienteDAO clienteDAO = new ClienteDAO();
 
-                Cliente cliente = clienteDAO.getClienteByDNI(dni);
+                    Cliente cliente = clienteDAO.getClienteByDNI(dni);
 
-                if(cliente != null){
-                    MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
-                    metodoPagoFrame.setVisible(true);
+                    if(cliente != null){
+                        MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
+                        metodoPagoFrame.setVisible(true);
+                    }
+                    else{
+                        JOptionPane.showInputDialog("El cliente no existe. Por favor registrese para poder comprar");
+                    }
+                }else{
+                    JOptionPane.showInputDialog("No tiene productos en el carrito de compra");
                 }
-                else{
-                    JOptionPane.showInputDialog("El cliente no existe. Por favor registrese para poder comprar");
-                }
+
                 dispose();
             }
         });
@@ -90,6 +110,7 @@ public class RealizarCompraFrame extends JFrame {
         JPanel panelTotal = new JPanel(new BorderLayout());
         panelTotal.add(lblTotal, BorderLayout.CENTER);
         panelTotal.add(btnConfirmarCompra, BorderLayout.EAST);
+        panelTotal.add(btnFiltrar, BorderLayout.NORTH);
 
         // Agregar paneles a la ventana
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelProductos, panelCarrito);
@@ -164,5 +185,106 @@ public class RealizarCompraFrame extends JFrame {
         ProductoDAO productoDAO = new ProductoDAO();
         return productoDAO.getAll();
     }
+
+
+    public void actualizarInterfazUsuario(List<Producto> productosFiltrados) {
+        // Obtener el modelo de la tabla
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaProductos.getModel();
+        // Limpiar la tabla
+        modeloTabla.setRowCount(0);
+
+        // Actualizar la tabla con los productos filtrados
+        for (Producto producto : productosFiltrados) {
+            // Crear un arreglo con los datos del producto
+            Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio()};
+            // Agregar la fila a la tabla
+            modeloTabla.addRow(fila);
+        }
+    }
+
+    public void filtrarPorDepartamento(String filtroDepartamento) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            FiltroDepartamento filtro = new FiltroDepartamento(filtroDepartamento);
+            if (filtro.cumple(producto)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        // Actualizar la interfaz de usuario con la lista filtrada
+        actualizarInterfazUsuario(productosFiltrados);
+    }
+
+    public void filtrarPorPrecioMenor(Double filtroPrecioMenor) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            FiltroPrecioMenor filtro = new FiltroPrecioMenor(filtroPrecioMenor);
+            if (filtro.cumple(producto)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        // Actualizar la interfaz de usuario con la lista filtrada
+        actualizarInterfazUsuario(productosFiltrados);
+    }
+
+    public void filtrarPorPrecioMayor(Double filtroPrecioMayor) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            FiltroPrecioMayor filtro = new FiltroPrecioMayor(filtroPrecioMayor);
+            if (filtro.cumple(producto)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        // Actualizar la interfaz de usuario con la lista filtrada
+        actualizarInterfazUsuario(productosFiltrados);
+    }
+
+    public void filtrarPorNombre(String filtroNombre) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            FiltroNombre filtro = new FiltroNombre(filtroNombre);
+            if (filtro.cumple(producto)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        // Actualizar la interfaz de usuario con la lista filtrada
+        actualizarInterfazUsuario(productosFiltrados);
+    }
+
+    public void filtrarAND(Filtro filtro1, Filtro filtro2) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            FiltroAnd filtro = new FiltroAnd(filtro1, filtro2);
+            if (filtro.cumple(producto)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        // Actualizar la interfaz de usuario con la lista filtrada
+        actualizarInterfazUsuario(productosFiltrados);
+    }
+
+    public void filtrarOR(Filtro filtro1, Filtro filtro2) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            FiltroOr filtro = new FiltroOr(filtro1, filtro2);
+            if (filtro.cumple(producto)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        // Actualizar la interfaz de usuario con la lista filtrada
+        actualizarInterfazUsuario(productosFiltrados);
+    }
+
+    public void setFiltroDepartamento(String filtroDepartamento) {
+        this.filtroDepartamento = filtroDepartamento;
+    }
+    public void setFiltroPrecioMenor(String filtroPrecioMenor) {
+    }
+
+    public void setFiltroPrecioMayor(String filtroPrecioMayor) {
+    }
+
+    public void setFiltroNombre(String filtroNombre) {
+    }
+
 
 }

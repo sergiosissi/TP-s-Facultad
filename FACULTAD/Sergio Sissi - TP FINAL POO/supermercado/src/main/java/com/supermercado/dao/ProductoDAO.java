@@ -2,7 +2,7 @@ package com.supermercado.dao;
 
 import com.supermercado.persona.Cliente;
 import com.supermercado.productos.Producto;
-import com.supermercado.util.HibernateUtil;
+import com.supermercado.util.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

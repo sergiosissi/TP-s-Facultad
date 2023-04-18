@@ -32,12 +32,10 @@ public class RegistrarClienteFrame extends JFrame {
         nombreLabel = new JLabel("Nombre:");
         apellidoLabel = new JLabel("Apellido:");
         dniLabel = new JLabel("DNI:");
-        telefonoLabel = new JLabel("Telefono:");
 
         nombreTextField = new JTextField(10);
         apellidoTextField = new JTextField(10);
         dniTextField = new JTextField(10);
-        telefonoTextField = new JTextField(10);
 
         registrarButton = new JButton("Registrar");
         registrarButton.addActionListener(new ActionListener() {
@@ -55,8 +53,6 @@ public class RegistrarClienteFrame extends JFrame {
         panel.add(apellidoTextField);
         panel.add(dniLabel);
         panel.add(dniTextField);
-        panel.add(telefonoLabel);
-        panel.add(telefonoTextField);
         panel.add(new JLabel());
         panel.add(registrarButton);
 
@@ -67,9 +63,8 @@ public class RegistrarClienteFrame extends JFrame {
         String nombre = nombreTextField.getText();
         String apellido = apellidoTextField.getText();
         String dni = dniTextField.getText();
-        String telefono = telefonoTextField.getText();
 
-        if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || telefono.isEmpty()) {
+        if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe completar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

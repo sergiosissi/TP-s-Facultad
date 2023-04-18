@@ -13,7 +13,7 @@ public class FiltroOr implements Filtro {
 
     @Override
     public boolean cumple(Producto producto){
-        return (this.filtro1.cumple(producto) && this.filtro2.cumple(producto));
+        return (this.filtro1.cumple(producto) || this.filtro2.cumple(producto));
     }
 
 }

@@ -1,5 +1,7 @@
 package com.supermercado.frame;
 
+import com.supermercado.dao.ProductoDAO;
+import com.supermercado.filtro.FiltroStockMenor;
 import com.supermercado.productos.Producto;
 import com.supermercado.productos.ProductoCompuesto;
 import com.supermercado.productos.ProductoPorPeso;
@@ -17,11 +19,15 @@ public class AgregarStockFrame extends JFrame {
     private JTable tablaProductos;
     private JTextField txtUnidades;
     private JButton btnAgregarUnidades;
+
+    private JButton btnFiltrar;
+    private int stockFiltrado;
     private DefaultTableModel modeloProductos;
+    private ProductoDAO productoDAO;
 
     public AgregarStockFrame() {
         // Obtener los productos existentes
-        List<Producto> productos =obtenerProductosDeLaBaseDeDatos();
+        List<Producto> productos = getProductos();
 
         // Configurar la tabla de productos
         String[] columnasProductos = {"Nombre", "Departamento", "Stock", "Tipo de producto"};
@@ -33,6 +39,20 @@ public class AgregarStockFrame extends JFrame {
                             producto instanceof ProductoCompuesto ? "Combo" : "Por peso"};
             modeloProductos.addRow(fila);
         }
+
+        // Configurar el botón de filtrar
+        btnFiltrar = new JButton("Filtrar");
+        btnFiltrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    stockFiltrado = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el valor de stock a filtrar"));
+                    filtrarProductos(stockFiltrado);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese un número válido");
+                }
+            }
+        });
 
         // Configurar el campo de texto para unidades y el botón de agregar unidades
         txtUnidades = new JTextField(10);
@@ -46,6 +66,7 @@ public class AgregarStockFrame extends JFrame {
                     try {
                         int unidades = Integer.parseInt(txtUnidades.getText());
                         producto.agregarStock(unidades);
+                        productoDAO.update(producto);
                         modeloProductos.setValueAt(producto.getStock(), filaSeleccionada, 2);
                         JOptionPane.showMessageDialog(null, "Unidades agregadas exitosamente");
                         txtUnidades.setText("");
@@ -65,6 +86,7 @@ public class AgregarStockFrame extends JFrame {
         panelInferior.add(new JLabel("Unidades: "));
         panelInferior.add(txtUnidades);
         panelInferior.add(btnAgregarUnidades);
+        panelInferior.add(btnFiltrar);
         add(panelInferior, BorderLayout.SOUTH);
 
         // Configurar el frame
@@ -75,22 +97,32 @@ public class AgregarStockFrame extends JFrame {
         setVisible(true);
     }
 
-    private List<Producto> obtenerProductosDeLaBaseDeDatos() {
+    private List<Producto> getProductos() {
         // En este ejemplo, simulamos obtener los datos de la base de datos
         List<Producto> productos = new ArrayList<>();
-        productos.add(new ProductoPorPeso("Manzanas", 2.50, 20, 1, "Frutas" ));
-        productos.add(new ProductoSimple("Leche", 100.00, 30, "Lácteos"));
-        productos.add(new ProductoSimple("Pan", 30.00, 20,  "Panadería"));
-        productos.add(new ProductoSimple("Queso",3.00, 34, "Lácteos" ));
-        productos.add(new ProductoSimple("Tomates", 10.50, 30, "Verduras"));
+        this.productoDAO = new ProductoDAO();
+        productos = this.productoDAO.getAll();
 
-        ProductoSimple lechuga = new ProductoSimple("Lechuga", 30, 30, "Verduras");
-        ProductoSimple rabanito = new ProductoSimple("Rabanito", 25, 30, "Verduras");
-        List<Producto> comboEnsalada = new ArrayList<>();
-        comboEnsalada.add(lechuga);
-        comboEnsalada.add(rabanito);
-        productos.add(new ProductoCompuesto("Combo Ensalada", 3, "Combos", comboEnsalada));
         return productos;
+    }
+
+    private void filtrarProductos(int stockFiltrado) {
+        // Obtener los productos existentes
+        List<Producto> productos = getProductos();
+
+        FiltroStockMenor filtroStockMenor = new FiltroStockMenor(stockFiltrado);
+        // Limpiar el modelo de la tabla
+        modeloProductos.setRowCount(0);
+
+        // Filtrar los productos por stock menor al valor especificado
+        for (Producto producto : productos) {
+            if (filtroStockMenor.cumple(producto)) {
+                Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getStock(),
+                        producto instanceof ProductoSimple ? "Simple" :
+                                producto instanceof ProductoCompuesto ? "Combo" : "Por peso"};
+                modeloProductos.addRow(fila);
+            }
+        }
     }
 
 }

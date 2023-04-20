@@ -25,7 +25,7 @@ public class RegistrarClienteFrame extends JFrame {
         // Configurar ventana
         this.setTitle("Registrar Cliente");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setSize(400, 300);
+        this.setSize(600, 400);
         this.setLocationRelativeTo(null);
 
         // Crear componentes
@@ -92,6 +92,7 @@ public class RegistrarClienteFrame extends JFrame {
         cliente.setDni(dni);
         cliente.setHistorialCompras(compras);
         clienteDAO.guardar(cliente);
+        JOptionPane.showMessageDialog(this, "Se registró el cliente con exito");
     }
 
 

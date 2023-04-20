@@ -23,7 +23,7 @@ public class FiltrosFrame extends JFrame {
 
         // Configurar la ventana de FiltrosFrame
         setTitle("Filtros");
-        setSize(300, 300);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Crear y configurar los componentes de la interfaz de usuario

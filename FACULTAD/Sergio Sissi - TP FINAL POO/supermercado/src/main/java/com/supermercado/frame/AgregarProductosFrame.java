@@ -139,7 +139,7 @@ public class AgregarProductosFrame extends JFrame {
         add(btnAgregar);
 
         // Configurar tamaño y visibilidad del JFrame
-        setSize(400, 200);
+        setSize(600, 400);
         setLocationRelativeTo(null);
         setVisible(true);
     }

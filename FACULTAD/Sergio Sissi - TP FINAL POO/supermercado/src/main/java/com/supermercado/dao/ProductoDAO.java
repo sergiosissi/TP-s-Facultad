@@ -26,6 +26,53 @@ public class ProductoDAO {
         return productos;
 
     }
+
+    public static List<Producto> getAllCombos() {
+        List<Producto> productos = session.createQuery("FROM Producto WHERE departamento = 'Combos' ").list();
+        if (productos == null) {
+            productos = new ArrayList<>();
+        }
+        return productos;
+
+    }
+
+    public static Producto getProductoById(int id) {
+        Transaction tx = null;
+        Producto producto = null;
+        try {
+            tx = session.beginTransaction();
+            producto = (Producto) session.createQuery("FROM Producto WHERE id = :id")
+                    .setParameter("id", id)
+                    .uniqueResult();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        return producto;
+    }
+
+    public static List<Producto> getProductosByProductoCompuestoId(int id) {
+        Transaction tx = null;
+        List<Producto> productos = null;
+        try {
+            tx = session.beginTransaction();
+            productos = session.createQuery("SELECT pcp.producto FROM ProductoCompuestoProducto pcp WHERE pcp.productoCompuesto.id = :id")
+                    .setParameter("id", id)
+                    .list();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
+
     public static boolean existeProducto(String nombre) {
         Transaction tx = null;
         boolean existe = false;

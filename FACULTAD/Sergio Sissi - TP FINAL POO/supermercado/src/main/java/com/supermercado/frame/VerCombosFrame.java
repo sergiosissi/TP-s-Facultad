@@ -1,103 +1,70 @@
 package com.supermercado.frame;
 
-import com.supermercado.dao.ProductoCompuestoDAO;
+import com.supermercado.dao.ProductoDAO;
 import com.supermercado.productos.Producto;
-import com.supermercado.productos.ProductoCompuesto;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VerCombosFrame extends JFrame {
-    private JPanel contentPane;
-    private JComboBox<String> comboBox;
-    private JTextArea textArea;
+    private List<Producto> listaCombos; // Lista de todos los combos almacenados en la base de datos
+    private JTable tablaCombos;
+    private JButton btnFiltrar;
+    private ProductoDAO productoDao;
 
     public VerCombosFrame() {
+        // Inicialización de la lista de combos
+        listaCombos = new ArrayList<>();
+        productoDao = new ProductoDAO();
+        List<Producto> productosDelCombo = new ArrayList<>();
+
         // Configuración de la ventana
         setTitle("Ver Combos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 400, 400);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(new BorderLayout(0, 0));
+        setSize(600, 400);
+        setLocationRelativeTo(null); // Centrar ventana en pantalla
+        setLayout(new BorderLayout());
 
-        // Creación del panel de selección de combo
-        JPanel comboPanel = new JPanel();
-        contentPane.add(comboPanel, BorderLayout.NORTH);
-        comboPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        // Configuración del panel de la tabla de combos
+        JPanel panelTablaCombos = new JPanel(new BorderLayout());
+        panelTablaCombos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel lblCombo = new JLabel("Combo:");
-        comboPanel.add(lblCombo);
+        JLabel lblListaCombos = new JLabel("Combos Disponibles:");
+        panelTablaCombos.add(lblListaCombos, BorderLayout.NORTH);
 
-        comboBox = new JComboBox<>();
-        comboPanel.add(comboBox);
+        // Obtener la lista de todos los combos almacenados en la base de datos
 
-        JButton btnMostrarProductos = new JButton("Mostrar Productos");
-        comboPanel.add(btnMostrarProductos);
+        listaCombos = productoDao.getAllCombos();
 
-        // Creación del área de texto para mostrar los productos del combo seleccionado
-        textArea = new JTextArea();
-        contentPane.add(textArea, BorderLayout.CENTER);
-
-        // Acción del botón "Mostrar Productos"
-        btnMostrarProductos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarProductosComboSeleccionado();
+        // Configuración de la tabla para mostrar los combos
+        String[] columnas = {"Nombre", "Precio", "Stock", "Productos"};
+        DefaultTableModel modeloTablaCombos = new DefaultTableModel(columnas, 0);
+        for (Producto combo : listaCombos) {
+            String nombre = combo.getNombre();
+            String precio = String.valueOf(combo.getPrecio());
+            String stock = String.valueOf(combo.getStock());
+            productosDelCombo = productoDao.getProductosByProductoCompuestoId(combo.getId());
+            String productos = "";
+            for(Producto pdc : productosDelCombo){
+                productos += pdc.getNombre() + ", ";
             }
-        });
-
-        // Cargar los combos en el combo box
-        cargarCombos();
-    }
-
-    private void cargarCombos() {
-        // Obtener los combos de la base de datos o donde se almacenen
-        ProductoCompuestoDAO productoCompuestoDAO = new ProductoCompuestoDAO();
-        List<ProductoCompuesto> combos = productoCompuestoDAO.getAll();
-
-
-        // Agregar los combos al combo box
-        for (ProductoCompuesto combo : combos) {
-            comboBox.addItem(combo.getNombre());
+            productos = productos.substring(0, productos.length() - 2);
+            String[] fila = {nombre, precio, stock, productos};
+            modeloTablaCombos.addRow(fila);
         }
-    }
+        tablaCombos = new JTable(modeloTablaCombos);
+        JScrollPane scrollPaneCombos = new JScrollPane(tablaCombos);
+        panelTablaCombos.add(scrollPaneCombos, BorderLayout.CENTER);
 
-    private void mostrarProductosComboSeleccionado() {
-        // Obtener el combo seleccionado en el combo box
-        String nombreComboSeleccionado = (String) comboBox.getSelectedItem();
+        // Configuración del panel de botones
+        JPanel panelBotones = new JPanel(new FlowLayout());
 
-        // Obtener el combo de la base de datos o donde se almacene
-        ProductoCompuesto comboSeleccionado = obtenerComboDesdeBD(nombreComboSeleccionado);
 
-        // Obtener los productos del combo a partir de la tabla producto_compuesto_producto
-        List<Producto> productos = obtenerProductosDeComboDesdeBD(comboSeleccionado.getId());
-
-        // Mostrar los productos en el área de texto
-        textArea.setText("");
-        for (Producto producto : productos) {
-            textArea.append(producto.getNombre() + " - " + producto.getPrecio() + "\n");
-        }
-    }
-
-    private List<ProductoCompuesto> obtenerCombosDesdeBD() {
-        // Implementación para obtener los combos desde la base de datos o donde se almacenen
-        return null;
-    }
-
-    private ProductoCompuesto obtenerComboDesdeBD(String nombreCombo) {
-        // Implementación para obtener un combo de la base de datos o donde se almacene, a partir de su nombre
-        return null;
-    }
-
-    private List<Producto> obtenerProductosDeComboDesdeBD(int idCombo) {
-        // Implementación para obtener los productos de un combo a partir de la tabla producto_compuesto_producto
-        return null;
+        // Agregar componentes a la ventana
+        add(panelTablaCombos, BorderLayout.CENTER);
+        add(panelBotones, BorderLayout.SOUTH);
     }
 }
-

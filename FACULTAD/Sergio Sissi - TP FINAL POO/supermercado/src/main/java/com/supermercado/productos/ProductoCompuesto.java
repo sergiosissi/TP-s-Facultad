@@ -8,7 +8,7 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "producto_id", referencedColumnName = "id")
 public class ProductoCompuesto extends Producto {
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "producto_compuesto_producto",
             joinColumns = @JoinColumn(name = "producto_compuesto_id"),
@@ -29,9 +29,6 @@ public class ProductoCompuesto extends Producto {
         productos.add(producto);
     }
 
-    public void removeProducto(Producto producto) {
-        productos.remove(producto);
-    }
 
 
     // getters y setters

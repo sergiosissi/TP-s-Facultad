@@ -108,7 +108,14 @@ public class AgregarCombosFrame extends JFrame {
                 int stockInicial = Integer.parseInt(txtStockInicial.getText());
 
                 // Crear un nuevo ProductoCompuesto con los productos del combo y el stock inicial
-                ProductoCompuesto nuevoCombo = new ProductoCompuesto(nombreCombo, stockInicial, "Combos", listaProductosCombo);
+                //ProductoCompuesto nuevoCombo = new ProductoCompuesto(nombreCombo, stockInicial, "Combos", listaProductosCombo);
+                ProductoCompuesto nuevoCombo = new ProductoCompuesto();
+                nuevoCombo.setNombre(nombreCombo);
+                nuevoCombo.setDepartamento("Combos");
+                nuevoCombo.setStock(stockInicial);
+                for(Producto p : listaProductosCombo){
+                    nuevoCombo.addProducto(p);
+                }
 
                 // Agregar el nuevo combo a la base de datos
                 productoDAO.guardar(nuevoCombo);

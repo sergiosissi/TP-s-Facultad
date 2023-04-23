@@ -7,23 +7,27 @@ import java.awt.event.ActionListener;
 
 public class SupermercadoFrame extends JFrame {
 
-    private JButton btnRegistrarCliente;
+    private JButton btnRegistrarPersona;
     private JButton btnRealizarCompra;
     private JButton btnVerCombos;
+    private JButton btnVerHistorialCompras;
     private JButton btnAgregarProducto;
     private JButton btnAgregarCombo;
     private JButton btnAgregarStock;
+    private JButton btnEliminarProducto;
     private JButton btnSalir;
 
     public SupermercadoFrame() {
         initComponents();
         setLayout(new FlowLayout());
-        add(btnRegistrarCliente);
+        add(btnRegistrarPersona);
         add(btnRealizarCompra);
         add(btnVerCombos);
+        add(btnVerHistorialCompras);
         add(btnAgregarProducto);
         add(btnAgregarCombo);
         add(btnAgregarStock);
+        add(btnEliminarProducto);
         add(btnSalir);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Supermercado");
@@ -33,12 +37,13 @@ public class SupermercadoFrame extends JFrame {
     }
 
     private void initComponents() {
-        btnRegistrarCliente = new JButton("Registrar Cliente");
-        btnRegistrarCliente.addActionListener(new ActionListener() {
+
+        btnRegistrarPersona = new JButton("Registrar Persona");
+        btnRegistrarPersona.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RegistrarClienteFrame registrarClienteFrame = new RegistrarClienteFrame();
-                registrarClienteFrame.setVisible(true);
+                RegistrarNuevaPersonaFrame registrarNuevaPersonaFrame = new RegistrarNuevaPersonaFrame();
+                registrarNuevaPersonaFrame.setVisible(true);
             }
         });
 
@@ -57,6 +62,15 @@ public class SupermercadoFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 VerCombosFrame verCombosFrame = new VerCombosFrame();
                 verCombosFrame.setVisible(true);
+            }
+        });
+
+        btnVerHistorialCompras = new JButton("Ver Historial de Compras");
+        btnVerHistorialCompras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VerHistorialComprasFrame verHistorialComprasFrame = new VerHistorialComprasFrame();
+                verHistorialComprasFrame.setVisible(true);
             }
         });
 
@@ -94,6 +108,15 @@ public class SupermercadoFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 AgregarStockFrame agregarStockFrame = new AgregarStockFrame();
                 agregarStockFrame.setVisible(true);
+            }
+        });
+
+        btnEliminarProducto = new JButton("Eliminar Producto");
+        btnEliminarProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EliminarProductoFrame eliminarProductoFrame = new EliminarProductoFrame();
+                eliminarProductoFrame.setVisible(true);
             }
         });
 

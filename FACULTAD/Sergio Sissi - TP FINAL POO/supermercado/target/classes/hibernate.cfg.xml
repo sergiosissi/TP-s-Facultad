@@ -15,6 +15,7 @@
         <mapping class="com.supermercado.compra.Efectivo"/>
         <mapping class="com.supermercado.compra.Pago"/>
         <mapping class="com.supermercado.compra.Tarjeta"/>
+        <mapping class="com.supermercado.compra.CompraProducto"/>
         <mapping class="com.supermercado.productos.Producto"/>
         <mapping class="com.supermercado.productos.ProductoCompuestoProducto"/>
         <mapping class="com.supermercado.productos.ProductoCompuesto"/>

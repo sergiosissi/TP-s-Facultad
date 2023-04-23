@@ -51,7 +51,12 @@ public class Cliente extends Persona {
     }
 
     public List<Compra> getHistorialCompras() {
-        return historialCompras;
+
+        List<Compra> aux = new ArrayList<>();
+        for(Compra c : historialCompras){
+            aux.add(c);
+        }
+        return aux;
     }
 
     public void setHistorialCompras(List<Compra> historialCompras) {

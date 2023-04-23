@@ -22,7 +22,7 @@ public class PersonaDAO {
         return false;
     }
 
-    public void registrarPersona(Persona nuevaPersona) {
+    public void guardar(Persona nuevaPersona) {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

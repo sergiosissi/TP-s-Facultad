@@ -16,7 +16,7 @@ public class CompraProducto {
     @JoinColumn(name = "compra_id")
     private Compra compra;
 
-    @ManyToOne
+    @ManyToOne/*(cascade = CascadeType.REMOVE)*/
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
@@ -36,6 +36,6 @@ public class CompraProducto {
         this.producto = producto;
     }
 
-    // getters y setters para el campo "id" si es necesario
+
 
 }

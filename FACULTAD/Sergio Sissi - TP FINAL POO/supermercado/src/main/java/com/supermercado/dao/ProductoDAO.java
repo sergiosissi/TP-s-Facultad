@@ -1,7 +1,7 @@
 package com.supermercado.dao;
 
 import com.supermercado.persona.Cliente;
-import com.supermercado.productos.Producto;
+import com.supermercado.productos.*;
 import com.supermercado.util.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -93,6 +93,45 @@ public class ProductoDAO {
         return existe;
     }
 
+    public static void eliminarProductosComboByProductoId(int productoId) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            // Se utiliza una consulta de Hibernate para eliminar los registros de la tabla producto_compuesto_producto
+            session.createQuery("DELETE FROM ProductoCompuestoProducto WHERE producto.id = :productoId")
+                    .setParameter("productoId", productoId)
+                    .executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public boolean perteneceACombo(int idProducto) {
+        boolean perteneceACombo = false;
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            List<ProductoCompuestoProducto>listaProductosCompuestos = session.createQuery("FROM ProductoCompuestoProducto WHERE producto.id = :productoId")
+                                                                                .setParameter("productoId", idProducto)
+                                                                                    .list();
+            if (!listaProductosCompuestos.isEmpty()) {
+                perteneceACombo = true;
+            }
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        }
+        return perteneceACombo;
+    }
+
+
+
+
 
     public static void guardar(Producto producto) {
         Transaction tx = null;
@@ -114,10 +153,58 @@ public class ProductoDAO {
         session.getTransaction().commit();
     }
 
+
+    public void deleteProductoSimple(ProductoSimple productoSimple) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(productoSimple);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProductoPorPeso(ProductoPorPeso productoPorPeso) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(productoPorPeso);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+
     public void delete(Producto producto) {
         session.beginTransaction();
         session.delete(producto);
         session.getTransaction().commit();
     }
+
+    public void deleteById(int id) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Producto producto = session.get(Producto.class, id);
+            if (producto != null) {
+                session.delete(producto);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
 }
 

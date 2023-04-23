@@ -24,6 +24,7 @@ public class RealizarCompraFrame extends JFrame {
     private JButton btnConfirmarCompra;
     private JLabel lblTotal;
     private JButton btnFiltrar;
+    private Cliente cliente;
     private List<Producto> carrito;
     private List<Producto> productos;
     private String filtroDepartamento;
@@ -36,6 +37,17 @@ public class RealizarCompraFrame extends JFrame {
 
         // Obtener datos de la base de datos
         productos = getProductos();
+
+        String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
+
+        ClienteDAO clienteDAO = new ClienteDAO();
+
+        cliente = clienteDAO.getClienteByDNI(dni);
+
+        if(cliente == null){
+            JOptionPane.showInputDialog("El cliente no existe. Por favor registrese para poder comprar");
+        }
+
 
         // Crear tabla de productos
         String[] columnasProductos = {"Nombre", "Departamento", "Precio"};
@@ -202,78 +214,14 @@ public class RealizarCompraFrame extends JFrame {
         }
     }
 
-    public void filtrarPorDepartamento(String filtroDepartamento) {
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : productos) {
-            FiltroDepartamento filtro = new FiltroDepartamento(filtroDepartamento);
-            if (filtro.cumple(producto)) {
-                productosFiltrados.add(producto);
-            }
-        }
-        // Actualizar la interfaz de usuario con la lista filtrada
-        actualizarInterfazUsuario(productosFiltrados);
-    }
+    public void aplicarFiltro(Filtro f){
 
-    public void filtrarPorPrecioMenor(Double filtroPrecioMenor) {
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : productos) {
-            FiltroPrecioMenor filtro = new FiltroPrecioMenor(filtroPrecioMenor);
-            if (filtro.cumple(producto)) {
-                productosFiltrados.add(producto);
-            }
-        }
-        // Actualizar la interfaz de usuario con la lista filtrada
-        actualizarInterfazUsuario(productosFiltrados);
-    }
+        List<Producto> productosFiltrados =  cliente.filtrarProductos(f);
 
-    public void filtrarPorPrecioMayor(Double filtroPrecioMayor) {
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : productos) {
-            FiltroPrecioMayor filtro = new FiltroPrecioMayor(filtroPrecioMayor);
-            if (filtro.cumple(producto)) {
-                productosFiltrados.add(producto);
-            }
-        }
-        // Actualizar la interfaz de usuario con la lista filtrada
         actualizarInterfazUsuario(productosFiltrados);
-    }
 
-    public void filtrarPorNombre(String filtroNombre) {
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : productos) {
-            FiltroNombre filtro = new FiltroNombre(filtroNombre);
-            if (filtro.cumple(producto)) {
-                productosFiltrados.add(producto);
-            }
-        }
-        // Actualizar la interfaz de usuario con la lista filtrada
-        actualizarInterfazUsuario(productosFiltrados);
     }
-
-    public void filtrarAND(Filtro filtro1, Filtro filtro2) {
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : productos) {
-            FiltroAnd filtro = new FiltroAnd(filtro1, filtro2);
-            if (filtro.cumple(producto)) {
-                productosFiltrados.add(producto);
-            }
-        }
-        // Actualizar la interfaz de usuario con la lista filtrada
-        actualizarInterfazUsuario(productosFiltrados);
-    }
-
-    public void filtrarOR(Filtro filtro1, Filtro filtro2) {
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : productos) {
-            FiltroOr filtro = new FiltroOr(filtro1, filtro2);
-            if (filtro.cumple(producto)) {
-                productosFiltrados.add(producto);
-            }
-        }
-        // Actualizar la interfaz de usuario con la lista filtrada
-        actualizarInterfazUsuario(productosFiltrados);
-    }
-
+    
     public void setFiltroDepartamento(String filtroDepartamento) {
         this.filtroDepartamento = filtroDepartamento;
     }

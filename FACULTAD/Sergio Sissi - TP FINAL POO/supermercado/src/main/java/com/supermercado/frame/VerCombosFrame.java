@@ -47,6 +47,7 @@ public class VerCombosFrame extends JFrame {
             String precio = String.valueOf(combo.getPrecio());
             String stock = String.valueOf(combo.getStock());
             productosDelCombo = productoDao.getProductosByProductoCompuestoId(combo.getId());
+
             String productos = "";
             for(Producto pdc : productosDelCombo){
                 productos += pdc.getNombre() + ", ";

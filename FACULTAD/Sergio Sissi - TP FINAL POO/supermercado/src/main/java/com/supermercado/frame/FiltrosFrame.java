@@ -1,9 +1,6 @@
 package com.supermercado.frame;
 
-import com.supermercado.filtro.FiltroDepartamento;
-import com.supermercado.filtro.FiltroNombre;
-import com.supermercado.filtro.FiltroPrecioMayor;
-import com.supermercado.filtro.FiltroPrecioMenor;
+import com.supermercado.filtro.*;
 import com.supermercado.frame.RealizarCompraFrame;
 
 import javax.swing.*;
@@ -56,16 +53,20 @@ public class FiltrosFrame extends JFrame {
 
                 if(operacionLogicaTexto == null || operacionLogicaTexto.equals("")){
                     if(filtroDepartamentoTexto != null && !filtroDepartamentoTexto.equals("")){
-                        realizarCompraFrame.filtrarPorDepartamento(filtroDepartamentoTexto);
+                        FiltroDepartamento filtroDepartamento = new FiltroDepartamento(filtroDepartamentoTexto);
+                        realizarCompraFrame.aplicarFiltro(filtroDepartamento);
                     }else{
                         if(filtroPrecioMenorTexto != null && !filtroPrecioMenorTexto.equals("")){
-                            realizarCompraFrame.filtrarPorPrecioMenor(Double.valueOf(filtroPrecioMenorTexto));
+                            FiltroPrecioMenor filtroPrecioMenor = new FiltroPrecioMenor(Double.valueOf(filtroPrecioMenorTexto));
+                            realizarCompraFrame.aplicarFiltro(filtroPrecioMenor);
                         }else{
                             if(filtroPrecioMayorTexto != null && !filtroPrecioMayorTexto.equals("")){
-                                realizarCompraFrame.filtrarPorPrecioMayor(Double.valueOf(filtroPrecioMayorTexto));
+                                FiltroPrecioMayor filtroPrecioMayor = new FiltroPrecioMayor(Double.valueOf(filtroPrecioMenorTexto));
+                                realizarCompraFrame.aplicarFiltro(filtroPrecioMayor);
                             }else{
                                 if(filtroNombreTexto != null && !filtroNombreTexto.equals("")){
-                                    realizarCompraFrame.filtrarPorNombre(filtroNombreTexto);
+                                    FiltroNombre filtroNombre = new FiltroNombre(filtroNombreTexto);
+                                    realizarCompraFrame.aplicarFiltro(filtroNombre);
                                 }
                             }
 
@@ -80,9 +81,11 @@ public class FiltrosFrame extends JFrame {
                         FiltroPrecioMenor filtroPrecioMenor = new FiltroPrecioMenor(Double.valueOf(filtroPrecioMenorTexto));
 
                         if(operacionLogicaTexto.equals("AND")){
-                            realizarCompraFrame.filtrarAND(filtroDepartamento, filtroPrecioMenor);
+                            FiltroAnd filtroAnd = new FiltroAnd(filtroDepartamento, filtroPrecioMenor);
+                            realizarCompraFrame.aplicarFiltro(filtroAnd);
                         }else {
-                            realizarCompraFrame.filtrarOR(filtroDepartamento, filtroPrecioMenor);
+                            FiltroOr filtroOr = new FiltroOr(filtroDepartamento, filtroPrecioMenor);
+                            realizarCompraFrame.aplicarFiltro(filtroOr);
                         }
                     } else if ((filtroDepartamentoTexto != null && !filtroDepartamentoTexto.equals(""))
                             && (filtroPrecioMayorTexto != null && !filtroPrecioMayorTexto.equals(""))) {
@@ -91,9 +94,11 @@ public class FiltrosFrame extends JFrame {
                         FiltroPrecioMayor filtroPrecioMayor = new FiltroPrecioMayor(Double.valueOf(filtroPrecioMayorTexto));
 
                         if(operacionLogicaTexto.equals("AND")){
-                            realizarCompraFrame.filtrarAND(filtroDepartamento, filtroPrecioMayor);
+                            FiltroAnd filtroAnd = new FiltroAnd(filtroDepartamento, filtroPrecioMayor);
+                            realizarCompraFrame.aplicarFiltro(filtroAnd);
                         }else {
-                            realizarCompraFrame.filtrarOR(filtroDepartamento, filtroPrecioMayor);
+                            FiltroOr filtroOr = new FiltroOr(filtroDepartamento, filtroPrecioMayor);
+                            realizarCompraFrame.aplicarFiltro(filtroOr);
                         }
 
                     } else if ((filtroDepartamentoTexto != null && !filtroDepartamentoTexto.equals(""))
@@ -103,9 +108,11 @@ public class FiltrosFrame extends JFrame {
                         FiltroNombre filtroNombre = new FiltroNombre((filtroNombreTexto));
 
                         if(operacionLogicaTexto.equals("AND")){
-                            realizarCompraFrame.filtrarAND(filtroDepartamento, filtroNombre);
+                            FiltroAnd filtroAnd = new FiltroAnd(filtroDepartamento, filtroNombre);
+                            realizarCompraFrame.aplicarFiltro(filtroAnd);
                         }else {
-                            realizarCompraFrame.filtrarOR(filtroDepartamento, filtroNombre);
+                            FiltroOr filtroOr = new FiltroOr(filtroDepartamento, filtroNombre);
+                            realizarCompraFrame.aplicarFiltro(filtroOr);
                         }
 
                     } else if ((filtroPrecioMenorTexto != null && !filtroPrecioMenorTexto.equals(""))
@@ -115,9 +122,11 @@ public class FiltrosFrame extends JFrame {
                         FiltroPrecioMayor filtroPrecioMayor = new FiltroPrecioMayor(Double.valueOf(filtroPrecioMayorTexto));
 
                         if(operacionLogicaTexto.equals("AND")){
-                            realizarCompraFrame.filtrarAND(filtroPrecioMenor, filtroPrecioMayor);
+                            FiltroAnd filtroAnd = new FiltroAnd(filtroPrecioMayor, filtroPrecioMenor);
+                            realizarCompraFrame.aplicarFiltro(filtroAnd);
                         }else {
-                            realizarCompraFrame.filtrarOR(filtroPrecioMenor, filtroPrecioMayor);
+                            FiltroOr filtroOr = new FiltroOr(filtroPrecioMayor, filtroPrecioMenor);
+                            realizarCompraFrame.aplicarFiltro(filtroOr);
                         }
 
                     } else if ((filtroPrecioMenorTexto != null && !filtroPrecioMenorTexto.equals(""))
@@ -126,9 +135,11 @@ public class FiltrosFrame extends JFrame {
                         FiltroPrecioMenor filtroPrecioMenor = new FiltroPrecioMenor(Double.valueOf(filtroPrecioMenorTexto));
                         FiltroNombre filtroNombre = new FiltroNombre((filtroNombreTexto));
                         if(operacionLogicaTexto.equals("AND")){
-                            realizarCompraFrame.filtrarAND(filtroPrecioMenor, filtroNombre);
+                            FiltroAnd filtroAnd = new FiltroAnd(filtroNombre, filtroPrecioMenor);
+                            realizarCompraFrame.aplicarFiltro(filtroAnd);
                         }else {
-                            realizarCompraFrame.filtrarOR(filtroPrecioMenor, filtroNombre);
+                            FiltroOr filtroOr = new FiltroOr(filtroNombre, filtroPrecioMenor);
+                            realizarCompraFrame.aplicarFiltro(filtroOr);
                         }
 
                     } else if ((filtroPrecioMayorTexto != null && !filtroPrecioMayorTexto.equals(""))
@@ -137,9 +148,11 @@ public class FiltrosFrame extends JFrame {
                         FiltroPrecioMayor filtroPrecioMayor = new FiltroPrecioMayor(Double.valueOf(filtroPrecioMayorTexto));
                         FiltroNombre filtroNombre = new FiltroNombre((filtroNombreTexto));
                         if(operacionLogicaTexto.equals("AND")){
-                            realizarCompraFrame.filtrarAND(filtroPrecioMayor, filtroNombre);
+                            FiltroAnd filtroAnd = new FiltroAnd(filtroPrecioMayor, filtroNombre);
+                            realizarCompraFrame.aplicarFiltro(filtroAnd);
                         }else {
-                            realizarCompraFrame.filtrarOR(filtroPrecioMayor, filtroNombre);
+                            FiltroOr filtroOr = new FiltroOr(filtroPrecioMayor, filtroNombre);
+                            realizarCompraFrame.aplicarFiltro(filtroOr);
                         }
 
                     } else {

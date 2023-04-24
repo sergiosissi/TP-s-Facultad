@@ -20,7 +20,8 @@ public class Compra {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    // @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "compra_producto",
             joinColumns = {@JoinColumn(name = "compra_id")},
             inverseJoinColumns = {@JoinColumn(name = "producto_id")})

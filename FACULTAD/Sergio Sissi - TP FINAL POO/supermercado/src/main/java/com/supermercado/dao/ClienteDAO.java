@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class ClienteDAO {
-    private Session session;
+    private static Session session;
 
     public ClienteDAO() {
         this.session =  HibernateUtil.getSessionFactory().openSession();
@@ -28,7 +28,7 @@ public class ClienteDAO {
 
     }
 
-    public Cliente getClienteById(Long id) {
+    public static Cliente getClienteById(Long id) {
         Cliente cliente = null;
         Transaction tx = null;
         try {

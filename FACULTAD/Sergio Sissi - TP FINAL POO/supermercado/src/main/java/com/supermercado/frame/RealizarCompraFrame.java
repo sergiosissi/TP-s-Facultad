@@ -27,13 +27,14 @@ public class RealizarCompraFrame extends JFrame {
     private Cliente cliente;
     private List<Producto> carrito;
     private List<Producto> productos;
-    private String filtroDepartamento;
+
+    private ProductoDAO productoDAO;
     private double total;
 
     public RealizarCompraFrame() {
 
 
-       //  super("Realizar Compra");
+
 
 
         String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
@@ -50,6 +51,7 @@ public class RealizarCompraFrame extends JFrame {
             this.setVisible(true);
 
             // Obtener datos de la base de datos
+            productoDAO = new ProductoDAO();
             productos = getProductos();
 
 
@@ -87,6 +89,13 @@ public class RealizarCompraFrame extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     // Realizar la compra
                     if(carrito != null && !carrito.isEmpty()){
+
+                        for (Producto producto : carrito) {
+                            int nuevoStock = producto.getStock() - 1;
+                            producto.setStock(nuevoStock);
+                            // Actualizar el stock en la base de datos
+                            productoDAO.update(producto);
+                        }
 
                         MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
                         metodoPagoFrame.setVisible(true);
@@ -196,7 +205,6 @@ public class RealizarCompraFrame extends JFrame {
 
     private List<Producto> getProductos() {
 
-        ProductoDAO productoDAO = new ProductoDAO();
         return productoDAO.getAll();
     }
 

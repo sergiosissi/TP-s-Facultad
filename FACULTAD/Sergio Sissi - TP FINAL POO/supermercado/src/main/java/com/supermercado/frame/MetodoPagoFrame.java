@@ -24,11 +24,19 @@ public class MetodoPagoFrame extends JFrame {
     private JComboBox<Integer> cmbCuotas;
     private JButton btnFinalizarCompra;
 
+    private PagoDAO pagoDAO = new PagoDAO();
+    private CompraDAO compraDAO = new CompraDAO();
+    private ClienteDAO clienteDAO = new ClienteDAO();
+
     public MetodoPagoFrame(Long idCliente, List<Producto> carrito, double montoTotal) {
+
+
+
 
         super("Seleccionar Método de Pago");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 400);
+
 
         // Crear combo box para elegir el método de pago
         String[] metodosPago = {"Efectivo", "Tarjeta"};
@@ -138,9 +146,6 @@ public class MetodoPagoFrame extends JFrame {
 
     private void realizarCompra(Long idCliente, List<Producto> carrito, double montoTotal, String metodoPago, String tipoTarjeta, int numCuotas) {
 
-        PagoDAO pagoDAO = new PagoDAO();
-        CompraDAO compraDAO = new CompraDAO();
-        ClienteDAO clienteDAO = new ClienteDAO();
         Date fecha = new Date();
 
         Efectivo pagoEfectivo = null;
@@ -151,7 +156,7 @@ public class MetodoPagoFrame extends JFrame {
             pagoEfectivo.setFechaPago(fecha);
             pagoEfectivo.setDescuento(0.0);
             pagoEfectivo.setMontoPagado(montoTotal);
-            PagoDAO.guardar(pagoEfectivo);
+            pagoDAO.guardar(pagoEfectivo);
 
         }else{
             pagoTarjeta = new Tarjeta();
@@ -160,7 +165,7 @@ public class MetodoPagoFrame extends JFrame {
             pagoTarjeta.setRecargo(0.0);
             pagoTarjeta.setMontoPagado(montoTotal);
             pagoTarjeta.setFechaPago(fecha);
-            PagoDAO.guardar(pagoTarjeta);
+            pagoDAO.guardar(pagoTarjeta);
         }
 
         Cliente cliente = clienteDAO.getClienteById(idCliente);
@@ -181,15 +186,15 @@ public class MetodoPagoFrame extends JFrame {
         compraDAO.guardar(compra);
 
 
-        for (Producto producto : carrito) {
-            CompraProducto compraProducto = new CompraProducto();
-            compraProducto.setCompra(compra);
-            compraProducto.setProducto(producto);
+    //    for (Producto producto : carrito) {
+     //       CompraProducto compraProducto = new CompraProducto();
+      //      compraProducto.setCompra(compra);
+      //      compraProducto.setProducto(producto);
 
             // Guardar el registro en la tabla compra_producto
-            CompraProductoDAO compraProductoDAO = new CompraProductoDAO();
-            compraProductoDAO.guardar(compraProducto);
-        }
+       //     CompraProductoDAO compraProductoDAO = new CompraProductoDAO();
+        //    compraProductoDAO.guardar(compraProducto);
+       // }
 
 
 

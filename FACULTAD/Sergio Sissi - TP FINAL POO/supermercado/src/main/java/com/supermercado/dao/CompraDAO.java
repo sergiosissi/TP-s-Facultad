@@ -36,7 +36,7 @@ public class CompraDAO {
     }
 
 
-    public void guardar(Compra compra) {
+    public static void guardar(Compra compra) {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

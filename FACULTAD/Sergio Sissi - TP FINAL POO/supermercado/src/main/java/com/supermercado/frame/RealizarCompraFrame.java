@@ -33,9 +33,8 @@ public class RealizarCompraFrame extends JFrame {
     public RealizarCompraFrame() {
 
 
-        super("Realizar Compra");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(600, 400);
+       //  super("Realizar Compra");
+
 
         String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
 
@@ -43,134 +42,140 @@ public class RealizarCompraFrame extends JFrame {
 
         cliente = clienteDAO.getClienteByDNI(dni);
 
-        if(cliente == null){
+        if(cliente != null){
+
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setSize(600, 400);
+
+            this.setVisible(true);
+
+            // Obtener datos de la base de datos
+            productos = getProductos();
+
+
+
+            // Crear tabla de productos
+            String[] columnasProductos = {"Nombre", "Departamento", "Precio"};
+            DefaultTableModel modeloProductos = new DefaultTableModel(columnasProductos, 0);
+            for (Producto producto : productos) {
+                Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio()};
+                modeloProductos.addRow(fila);
+            }
+            tablaProductos = new JTable(modeloProductos);
+
+            // Crear tabla de carrito
+            String[] columnasCarrito = {"Nombre", "Departamento", "Precio", "Tipo de producto"};
+            DefaultTableModel modeloCarrito = new DefaultTableModel(columnasCarrito, 0);
+            tablaCarrito = new JTable(modeloCarrito);
+
+
+            //Crear botón para filtrar los productos
+
+            btnFiltrar = new JButton("Filtrar");
+            btnFiltrar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Crear y mostrar la ventana de FiltrosFrame
+                    FiltrosFrame filtrosFrame = new FiltrosFrame(RealizarCompraFrame.this);
+                }
+            });
+
+            // Crear botón de confirmar compra
+            btnConfirmarCompra = new JButton("Confirmar Compra");
+            btnConfirmarCompra.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Realizar la compra
+                    if(carrito != null && !carrito.isEmpty()){
+
+                        MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
+                        metodoPagoFrame.setVisible(true);
+
+                    }else{
+                        JOptionPane.showInputDialog("No tiene productos en el carrito de compra");
+                    }
+
+                    dispose();
+                }
+            });
+
+            // Crear etiqueta para el total
+            lblTotal = new JLabel("Total: $0.00");
+
+            // Crear paneles
+            JPanel panelProductos = new JPanel(new BorderLayout());
+            panelProductos.add(new JScrollPane(tablaProductos), BorderLayout.CENTER);
+
+            JPanel panelCarrito = new JPanel(new BorderLayout());
+            panelCarrito.add(new JScrollPane(tablaCarrito), BorderLayout.CENTER);
+
+            JPanel panelBotones = new JPanel();
+            JButton btnAgregar = new JButton("Agregar al Carrito");
+            JButton btnEliminar = new JButton("Eliminar del Carrito");
+            panelBotones.add(btnAgregar);
+            panelBotones.add(btnEliminar);
+
+            JPanel panelTotal = new JPanel(new BorderLayout());
+            panelTotal.add(lblTotal, BorderLayout.CENTER);
+            panelTotal.add(btnConfirmarCompra, BorderLayout.EAST);
+            panelTotal.add(btnFiltrar, BorderLayout.NORTH);
+
+            // Agregar paneles a la ventana
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelProductos, panelCarrito);
+            splitPane.setResizeWeight(0.5);
+            getContentPane().add(splitPane, BorderLayout.CENTER);
+
+            getContentPane().add(panelBotones, BorderLayout.SOUTH);
+            getContentPane().add(panelTotal, BorderLayout.NORTH);
+
+            // Inicializar lista de compras
+            carrito = new ArrayList<>();
+
+            // Configurar botón de agregar
+            btnAgregar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Agregar el producto seleccionado al carrito
+                    int filaSeleccionada = tablaProductos.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        Producto producto = productos.get(filaSeleccionada);
+                        if (producto instanceof ProductoPorPeso) {
+                            String pesoStr = JOptionPane.showInputDialog("Ingrese el peso del producto:");
+                            double peso = Double.parseDouble(pesoStr);
+                            ((ProductoPorPeso) producto).setPeso(peso);
+                        }
+                        carrito.add(producto);
+                        Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio(),
+                                producto instanceof ProductoSimple ? "Simple" :
+                                        producto instanceof ProductoCompuesto ? "Combo" : "Por peso"};
+                        modeloCarrito.addRow(fila);
+                        total += producto.getPrecio();
+                        actualizarTotal();
+                    }
+                }
+            });
+
+            // Configurar botón de eliminar
+            btnEliminar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Eliminar el producto seleccionado del carrito
+                    int filaSeleccionada = tablaCarrito.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        Producto producto = carrito.get(filaSeleccionada);
+                        carrito.remove(producto);
+                        modeloCarrito.removeRow(filaSeleccionada);
+                        total -= producto.getPrecio();
+                        actualizarTotal();
+                    }
+                }
+            });
+        }else{
             JOptionPane.showMessageDialog(RealizarCompraFrame.this, "El cliente no existe. Por favor registrese para poder comprar", "Error",
                     JOptionPane.ERROR_MESSAGE);
-            dispose();
+            this.setVisible(false);
         }
 
-
-        // Obtener datos de la base de datos
-        productos = getProductos();
-
-
-
-        // Crear tabla de productos
-        String[] columnasProductos = {"Nombre", "Departamento", "Precio"};
-        DefaultTableModel modeloProductos = new DefaultTableModel(columnasProductos, 0);
-        for (Producto producto : productos) {
-            Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio()};
-            modeloProductos.addRow(fila);
-        }
-        tablaProductos = new JTable(modeloProductos);
-
-        // Crear tabla de carrito
-        String[] columnasCarrito = {"Nombre", "Departamento", "Precio", "Tipo de producto"};
-        DefaultTableModel modeloCarrito = new DefaultTableModel(columnasCarrito, 0);
-        tablaCarrito = new JTable(modeloCarrito);
-
-
-        //Crear botón para filtrar los productos
-
-        btnFiltrar = new JButton("Filtrar");
-        btnFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Crear y mostrar la ventana de FiltrosFrame
-                FiltrosFrame filtrosFrame = new FiltrosFrame(RealizarCompraFrame.this);
-            }
-        });
-
-        // Crear botón de confirmar compra
-        btnConfirmarCompra = new JButton("Confirmar Compra");
-        btnConfirmarCompra.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Realizar la compra
-                if(carrito != null && !carrito.isEmpty()){
-
-                    MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
-                    metodoPagoFrame.setVisible(true);
-
-                }else{
-                    JOptionPane.showInputDialog("No tiene productos en el carrito de compra");
-                }
-
-                dispose();
-            }
-        });
-
-        // Crear etiqueta para el total
-        lblTotal = new JLabel("Total: $0.00");
-
-        // Crear paneles
-        JPanel panelProductos = new JPanel(new BorderLayout());
-        panelProductos.add(new JScrollPane(tablaProductos), BorderLayout.CENTER);
-
-        JPanel panelCarrito = new JPanel(new BorderLayout());
-        panelCarrito.add(new JScrollPane(tablaCarrito), BorderLayout.CENTER);
-
-        JPanel panelBotones = new JPanel();
-        JButton btnAgregar = new JButton("Agregar al Carrito");
-        JButton btnEliminar = new JButton("Eliminar del Carrito");
-        panelBotones.add(btnAgregar);
-        panelBotones.add(btnEliminar);
-
-        JPanel panelTotal = new JPanel(new BorderLayout());
-        panelTotal.add(lblTotal, BorderLayout.CENTER);
-        panelTotal.add(btnConfirmarCompra, BorderLayout.EAST);
-        panelTotal.add(btnFiltrar, BorderLayout.NORTH);
-
-        // Agregar paneles a la ventana
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelProductos, panelCarrito);
-        splitPane.setResizeWeight(0.5);
-        getContentPane().add(splitPane, BorderLayout.CENTER);
-
-        getContentPane().add(panelBotones, BorderLayout.SOUTH);
-        getContentPane().add(panelTotal, BorderLayout.NORTH);
-
-        // Inicializar lista de compras
-        carrito = new ArrayList<>();
-
-        // Configurar botón de agregar
-        btnAgregar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Agregar el producto seleccionado al carrito
-                int filaSeleccionada = tablaProductos.getSelectedRow();
-                if (filaSeleccionada >= 0) {
-                    Producto producto = productos.get(filaSeleccionada);
-                    if (producto instanceof ProductoPorPeso) {
-                        String pesoStr = JOptionPane.showInputDialog("Ingrese el peso del producto:");
-                        double peso = Double.parseDouble(pesoStr);
-                        ((ProductoPorPeso) producto).setPeso(peso);
-                    }
-                    carrito.add(producto);
-                    Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio(),
-                            producto instanceof ProductoSimple ? "Simple" :
-                                    producto instanceof ProductoCompuesto ? "Combo" : "Por peso"};
-                    modeloCarrito.addRow(fila);
-                    total += producto.getPrecio();
-                    actualizarTotal();
-                }
-            }
-        });
-
-        // Configurar botón de eliminar
-        btnEliminar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Eliminar el producto seleccionado del carrito
-                int filaSeleccionada = tablaCarrito.getSelectedRow();
-                if (filaSeleccionada >= 0) {
-                    Producto producto = carrito.get(filaSeleccionada);
-                    carrito.remove(producto);
-                    modeloCarrito.removeRow(filaSeleccionada);
-                    total -= producto.getPrecio();
-                    actualizarTotal();
-                }
-            }
-        });
     }
 
 

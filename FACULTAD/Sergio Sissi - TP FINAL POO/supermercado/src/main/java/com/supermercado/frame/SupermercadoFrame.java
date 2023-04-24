@@ -80,7 +80,7 @@ public class SupermercadoFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 RealizarCompraFrame realizarCompraFrameFrame = new RealizarCompraFrame();
-                realizarCompraFrameFrame.setVisible(true);
+                // realizarCompraFrameFrame.setVisible(true);
             }
         });
 

@@ -120,8 +120,6 @@ public class AgregarCombosFrame extends JFrame {
                 // Agregar el nuevo combo a la base de datos
                 productoDAO.guardar(nuevoCombo);
 
-                // Cerrar la ventana de AgregarCombosFrame
-                dispose();
             }
         });
         panelBotones.add(btnConfirmar);

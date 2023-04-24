@@ -56,7 +56,7 @@ public class FiltrosFrame extends JFrame {
                             realizarCompraFrame.aplicarFiltro(filtroPrecioMenor);
                         }else{
                             if(filtroPrecioMayorTexto != null && !filtroPrecioMayorTexto.equals("")){
-                                FiltroPrecioMayor filtroPrecioMayor = new FiltroPrecioMayor(Double.valueOf(filtroPrecioMenorTexto));
+                                FiltroPrecioMayor filtroPrecioMayor = new FiltroPrecioMayor(Double.valueOf(filtroPrecioMayorTexto));
                                 realizarCompraFrame.aplicarFiltro(filtroPrecioMayor);
                             }else{
                                 if(filtroNombreTexto != null && !filtroNombreTexto.equals("")){

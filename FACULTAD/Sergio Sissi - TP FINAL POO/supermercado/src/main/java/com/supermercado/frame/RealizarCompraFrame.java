@@ -156,7 +156,9 @@ public class RealizarCompraFrame extends JFrame {
                             double peso = Double.parseDouble(pesoStr);
                             ((ProductoPorPeso) producto).setPeso(peso);
                         }
-                        if(producto.getStock() > 0){
+                        int stockInicial = producto.getStock();
+                        if(stockInicial > 0){
+                            producto.setStock(stockInicial-1);
                             carrito.add(producto);
                             Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio(),
                                     producto instanceof ProductoSimple ? "Simple" :
@@ -165,8 +167,9 @@ public class RealizarCompraFrame extends JFrame {
                             total += producto.getPrecio();
                             actualizarTotal();
                         }else{
-                            JOptionPane.showMessageDialog(RealizarCompraFrame.this, "El producto que esta queriendo agregar no tiene stock disponible", "Error",
+                            JOptionPane.showMessageDialog(RealizarCompraFrame.this, "El producto que esta queriendo agregar no tiene suficiente stock disponible", "Error",
                                     JOptionPane.ERROR_MESSAGE);
+                            producto.setStock(stockInicial+1);
                         }
 
                     }

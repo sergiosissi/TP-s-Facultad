@@ -87,6 +87,7 @@ public class AgregarStockFrame extends JFrame {
                             productoDAO.update(producto);
                             modeloProductos.setValueAt(producto.getStock(), filaSeleccionada, 2);
                             JOptionPane.showMessageDialog(null, "Unidades agregadas exitosamente");
+                            actualizarInterfazUsuario(productos);
                             txtUnidades.setText("");
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(null, "Por favor ingrese un número válido de unidades");
@@ -131,15 +132,15 @@ public class AgregarStockFrame extends JFrame {
 
         return productos;
     }
-    
-    public void actualizarInterfazUsuario(List<Producto> productosFiltrados) {
+
+    public void actualizarInterfazUsuario(List<Producto> productos) {
         // Obtener el modelo de la tabla
         DefaultTableModel modeloTabla = (DefaultTableModel) tablaProductos.getModel();
         // Limpiar la tabla
         modeloTabla.setRowCount(0);
 
         // Actualizar la tabla con los productos filtrados
-        for (Producto producto : productosFiltrados) {
+        for (Producto producto : productos) {
             // Crear un arreglo con los datos del producto
             Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getStock(),
                     producto instanceof ProductoSimple ? "Simple" :

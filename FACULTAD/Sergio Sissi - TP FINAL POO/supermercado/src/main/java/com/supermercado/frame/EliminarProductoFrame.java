@@ -88,7 +88,6 @@ public class EliminarProductoFrame extends JDialog {
                         productoDao.deleteById(productoSeleccionado.getId());
                         JOptionPane.showMessageDialog(EliminarProductoFrame.this, "Producto eliminado correctamente",
                                 "Información", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
                     }
                 }
             }

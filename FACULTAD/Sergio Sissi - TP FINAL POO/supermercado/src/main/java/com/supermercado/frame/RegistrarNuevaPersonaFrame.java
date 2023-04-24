@@ -83,8 +83,9 @@ public class RegistrarNuevaPersonaFrame extends JFrame {
 
         Persona persona = personaDAO.buscarPorDni(dni);
 
+
         if (persona != null) {
-            JOptionPane.showMessageDialog(this, "Ya existe una persona registrada con el mismo DNI", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ya existe un cliente registrada con el mismo DNI", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

@@ -72,18 +72,7 @@ public class Cliente extends Persona {
     }
 
     public List<Producto> filtrarProductos(Filtro filtro){
-
-        List<Producto> productos = ProductoDAO.getAll();
-        List<Producto> productosFiltrados = new ArrayList<>();
-
-        for(Producto p : productos){
-            if(filtro.cumple(p)){
-                productosFiltrados.add(p);
-            }
-        }
-
-        return productosFiltrados;
-
+        return super.filtrarProductos(filtro);
     }
 }
 

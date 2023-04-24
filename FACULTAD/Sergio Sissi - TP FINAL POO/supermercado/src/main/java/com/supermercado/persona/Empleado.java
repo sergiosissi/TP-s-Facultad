@@ -1,9 +1,11 @@
 package com.supermercado.persona;
 
+import com.supermercado.filtro.Filtro;
 import com.supermercado.productos.Producto;
 import com.supermercado.productos.ProductoSimple;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "empleado")
@@ -29,11 +31,12 @@ public class Empleado extends Persona {
     }
 
     public void agregarStock(Producto producto, int cantidad) {
-        producto.aumentarStock(cantidad);
+        producto.agregarStock(cantidad);
     }
 
-    public void modificarPrecio(ProductoSimple producto, double nuevoPrecio) {
-        producto.setPrecio(nuevoPrecio);
+    public List<Producto> filtrarProductos(Filtro filtro){
+        return super.filtrarProductos(filtro);
     }
+
 }
 

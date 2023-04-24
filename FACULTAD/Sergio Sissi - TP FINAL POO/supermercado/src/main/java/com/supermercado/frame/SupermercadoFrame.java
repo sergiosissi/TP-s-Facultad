@@ -107,7 +107,6 @@ public class SupermercadoFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AgregarStockFrame agregarStockFrame = new AgregarStockFrame();
-                agregarStockFrame.setVisible(true);
             }
         });
 

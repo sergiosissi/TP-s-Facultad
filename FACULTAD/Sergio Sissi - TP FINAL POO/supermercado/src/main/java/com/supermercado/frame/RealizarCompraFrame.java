@@ -57,10 +57,10 @@ public class RealizarCompraFrame extends JFrame {
 
 
             // Crear tabla de productos
-            String[] columnasProductos = {"Nombre", "Departamento", "Precio"};
+            String[] columnasProductos = {"Nombre", "Departamento", "Precio", "Stock"};
             DefaultTableModel modeloProductos = new DefaultTableModel(columnasProductos, 0);
             for (Producto producto : productos) {
-                Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio()};
+                Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio(), producto.getStock()};
                 modeloProductos.addRow(fila);
             }
             tablaProductos = new JTable(modeloProductos);
@@ -100,8 +100,11 @@ public class RealizarCompraFrame extends JFrame {
                         MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
                         metodoPagoFrame.setVisible(true);
 
+                        RealizarCompraFrame.this.informarCompra();
+
                     }else{
-                        JOptionPane.showInputDialog("No tiene productos en el carrito de compra");
+                        JOptionPane.showMessageDialog(RealizarCompraFrame.this, "No tiene productos en el carrito de compra", "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
 
                     dispose();
@@ -153,13 +156,19 @@ public class RealizarCompraFrame extends JFrame {
                             double peso = Double.parseDouble(pesoStr);
                             ((ProductoPorPeso) producto).setPeso(peso);
                         }
-                        carrito.add(producto);
-                        Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio(),
-                                producto instanceof ProductoSimple ? "Simple" :
-                                        producto instanceof ProductoCompuesto ? "Combo" : "Por peso"};
-                        modeloCarrito.addRow(fila);
-                        total += producto.getPrecio();
-                        actualizarTotal();
+                        if(producto.getStock() > 0){
+                            carrito.add(producto);
+                            Object[] fila = {producto.getNombre(), producto.getDepartamento(), producto.getPrecio(),
+                                    producto instanceof ProductoSimple ? "Simple" :
+                                            producto instanceof ProductoCompuesto ? "Combo" : "Por peso"};
+                            modeloCarrito.addRow(fila);
+                            total += producto.getPrecio();
+                            actualizarTotal();
+                        }else{
+                            JOptionPane.showMessageDialog(RealizarCompraFrame.this, "El producto que esta queriendo agregar no tiene stock disponible", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
                 }
             });
@@ -189,7 +198,7 @@ public class RealizarCompraFrame extends JFrame {
 
 
 
-    private void realizarCompra() {
+    private void informarCompra() {
 
 
         System.out.println("Productos comprados:");

@@ -77,13 +77,14 @@ public class EliminarProductoFrame extends JDialog {
                         // Eliminar el producto seleccionado de la base de datos
 
                         compraProductoDAO.eliminarCompraProductoByProductoId(productoSeleccionado.getId());
-                        if (productoSeleccionado instanceof ProductoPorPeso) {
-                            productoDao.deleteProductoPorPeso((ProductoPorPeso) productoSeleccionado);
-                        }
                         if(productoSeleccionado instanceof ProductoCompuesto){
                             productoDao.eliminarProductosComboByProductoId(productoSeleccionado.getId());
+                        }else {
+                            if (productoSeleccionado instanceof ProductoPorPeso) {
+                                productoDao.deleteProductoPorPeso((ProductoPorPeso) productoSeleccionado);
+                            }
+                            productoDao.deleteProductoSimple((ProductoSimple) productoSeleccionado);
                         }
-                        productoDao.deleteProductoSimple((ProductoSimple) productoSeleccionado);
                         productoDao.deleteById(productoSeleccionado.getId());
                         JOptionPane.showMessageDialog(EliminarProductoFrame.this, "Producto eliminado correctamente",
                                 "Información", JOptionPane.INFORMATION_MESSAGE);

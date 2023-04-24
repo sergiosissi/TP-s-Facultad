@@ -45,11 +45,6 @@ public class FiltrosFrame extends JFrame {
                 String filtroNombreTexto = nombreTextField.getText();
                 String operacionLogicaTexto = (String) operacionesLogicasComboBox.getSelectedItem();
 
-                // Establecer los valores de los filtros en la ventana de RealizarCompraFrame
-                realizarCompraFrame.setFiltroDepartamento(filtroDepartamentoTexto);
-                realizarCompraFrame.setFiltroPrecioMenor(filtroPrecioMenorTexto);
-                realizarCompraFrame.setFiltroPrecioMayor(filtroPrecioMayorTexto);
-                realizarCompraFrame.setFiltroNombre(filtroNombreTexto);
 
                 if(operacionLogicaTexto == null || operacionLogicaTexto.equals("")){
                     if(filtroDepartamentoTexto != null && !filtroDepartamentoTexto.equals("")){

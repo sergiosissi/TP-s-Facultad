@@ -31,12 +31,11 @@ public class RealizarCompraFrame extends JFrame {
     private double total;
 
     public RealizarCompraFrame() {
+
+
         super("Realizar Compra");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 400);
-
-        // Obtener datos de la base de datos
-        productos = getProductos();
 
         String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
 
@@ -45,8 +44,15 @@ public class RealizarCompraFrame extends JFrame {
         cliente = clienteDAO.getClienteByDNI(dni);
 
         if(cliente == null){
-            JOptionPane.showInputDialog("El cliente no existe. Por favor registrese para poder comprar");
+            JOptionPane.showMessageDialog(RealizarCompraFrame.this, "El cliente no existe. Por favor registrese para poder comprar", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            dispose();
         }
+
+
+        // Obtener datos de la base de datos
+        productos = getProductos();
+
 
 
         // Crear tabla de productos
@@ -66,7 +72,7 @@ public class RealizarCompraFrame extends JFrame {
 
         //Crear botón para filtrar los productos
 
-        JButton btnFiltrar = new JButton("Filtrar");
+        btnFiltrar = new JButton("Filtrar");
         btnFiltrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,19 +88,10 @@ public class RealizarCompraFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Realizar la compra
                 if(carrito != null && !carrito.isEmpty()){
-                    String dni = JOptionPane.showInputDialog(null, "Ingrese su DNI:", "Verificar Cliente", JOptionPane.PLAIN_MESSAGE);
 
-                    ClienteDAO clienteDAO = new ClienteDAO();
+                    MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
+                    metodoPagoFrame.setVisible(true);
 
-                    Cliente cliente = clienteDAO.getClienteByDNI(dni);
-
-                    if(cliente != null){
-                        MetodoPagoFrame metodoPagoFrame = new MetodoPagoFrame(cliente.getId(), carrito, total);
-                        metodoPagoFrame.setVisible(true);
-                    }
-                    else{
-                        JOptionPane.showInputDialog("El cliente no existe. Por favor registrese para poder comprar");
-                    }
                 }else{
                     JOptionPane.showInputDialog("No tiene productos en el carrito de compra");
                 }
@@ -217,22 +214,7 @@ public class RealizarCompraFrame extends JFrame {
     public void aplicarFiltro(Filtro f){
 
         List<Producto> productosFiltrados =  cliente.filtrarProductos(f);
-
         actualizarInterfazUsuario(productosFiltrados);
 
     }
-    
-    public void setFiltroDepartamento(String filtroDepartamento) {
-        this.filtroDepartamento = filtroDepartamento;
-    }
-    public void setFiltroPrecioMenor(String filtroPrecioMenor) {
-    }
-
-    public void setFiltroPrecioMayor(String filtroPrecioMayor) {
-    }
-
-    public void setFiltroNombre(String filtroNombre) {
-    }
-
-
 }

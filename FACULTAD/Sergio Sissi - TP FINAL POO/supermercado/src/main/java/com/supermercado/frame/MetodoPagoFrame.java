@@ -150,20 +150,30 @@ public class MetodoPagoFrame extends JFrame {
 
         Efectivo pagoEfectivo = null;
         Tarjeta pagoTarjeta = null;
+        double montoTotalEfectivo = 0.0;
+        double montoTotalCredito  = 0.0;
+        double descuento = 0.0;
+        double recargo = 0.0;
 
         if(metodoPago.equals("Efectivo")){
+            descuento = 10.0;
             pagoEfectivo = new Efectivo();
             pagoEfectivo.setFechaPago(fecha);
-            pagoEfectivo.setDescuento(0.0);
-            pagoEfectivo.setMontoPagado(montoTotal);
+            pagoEfectivo.setDescuento(descuento);
+            montoTotalEfectivo = montoTotal - (montoTotal*(descuento/100));
+            pagoEfectivo.setMontoPagado(montoTotalEfectivo);
             pagoDAO.guardar(pagoEfectivo);
 
         }else{
+            if(tipoTarjeta.equals("Credito")){
+                recargo = 15.0;
+            }
             pagoTarjeta = new Tarjeta();
             pagoTarjeta.setTipoTarjeta(tipoTarjeta);
             pagoTarjeta.setCuotas(numCuotas);
             pagoTarjeta.setRecargo(0.0);
-            pagoTarjeta.setMontoPagado(montoTotal);
+            montoTotalCredito = montoTotal + (montoTotal*(recargo/100));
+            pagoTarjeta.setMontoPagado(montoTotalCredito);
             pagoTarjeta.setFechaPago(fecha);
             pagoDAO.guardar(pagoTarjeta);
         }
@@ -180,23 +190,14 @@ public class MetodoPagoFrame extends JFrame {
             compra.setFechaCompra(fecha);
             compra.setPago(pagoTarjeta);
             compra.setCliente(cliente);
-            compra.setTotal(montoTotal);
+            if(tipoTarjeta.equals("Credito")){
+                compra.setTotal(montoTotalCredito);
+            }else{
+                compra.setTotal(montoTotal);
+            }
             compra.setProductos(carrito);
         }
         compraDAO.guardar(compra);
-
-
-    //    for (Producto producto : carrito) {
-     //       CompraProducto compraProducto = new CompraProducto();
-      //      compraProducto.setCompra(compra);
-      //      compraProducto.setProducto(producto);
-
-            // Guardar el registro en la tabla compra_producto
-       //     CompraProductoDAO compraProductoDAO = new CompraProductoDAO();
-        //    compraProductoDAO.guardar(compraProducto);
-       // }
-
-
 
     }
 }

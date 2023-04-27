@@ -64,10 +64,6 @@ public abstract class Producto {
         this.departamento = departamento;
     }
 
-    public void aumentarStock(int cantidad) {
-        this.stock+=cantidad;
-    }
-
 
     public void agregarStock(int cantidad) {
         this.stock += cantidad;

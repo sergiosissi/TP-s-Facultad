@@ -58,14 +58,13 @@ public class AgregarProductosFrame extends JFrame {
                 String stockStr = txtStock.getText();
                 String departamento = txtDepartamento.getText();
                 String precioStr = txtPrecio.getText();
-                String pesoStr = txtPeso.getText();
                 int stock = 0;
                 double precio = 0;
                 double peso = 1.0;
                 productoDAO = new ProductoDAO();
 
                 // Validar campos vacíos
-                if (nombre.isEmpty() || precioStr.isEmpty() || (rdbtnProductoPorPeso.isSelected() && pesoStr.isEmpty())) {
+                if (nombre.isEmpty() || precioStr.isEmpty() || (rdbtnProductoPorPeso.isSelected())) {
                     JOptionPane.showMessageDialog(AgregarProductosFrame.this, "Por favor ingrese todos los campos.");
                     return;
                 }
@@ -85,16 +84,6 @@ public class AgregarProductosFrame extends JFrame {
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(AgregarProductosFrame.this, "El precio debe ser un número válido.");
                     return;
-                }
-
-                // Validar formato de peso si es Producto por Peso
-                if (rdbtnProductoPorPeso.isSelected()) {
-                    try {
-                        peso = Double.parseDouble(pesoStr);
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(AgregarProductosFrame.this, "El peso debe ser un número válido.");
-                        return;
-                    }
                 }
 
                 // Verificar si el producto ya existe en la base de datos por el nombre
@@ -131,8 +120,6 @@ public class AgregarProductosFrame extends JFrame {
         add(txtDepartamento);
         add(lblPrecio);
         add(txtPrecio);
-        add(lblPeso);
-        add(txtPeso);
         add(rdbtnProductoSimple);
         add(rdbtnProductoPorPeso);
         add(new JLabel());

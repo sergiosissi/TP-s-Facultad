@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Sergio_Sissi___TP_FINAL_POO_jar</output-path>
     <root id="archive" name="Sergio Sissi - TP FINAL POO.jar">
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/supermercado/src/main/resources/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
     </root>
   </artifact>
